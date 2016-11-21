@@ -220,6 +220,7 @@ function Install-DevTools
         $DownloadFolder
     )
 
+    choco install dotnet3.5                      --limitoutput
 	choco install jdk8		        	    --limitoutput
     choco install slack                     --limitoutput
     choco install fiddler4               	--limitoutput
