@@ -109,7 +109,7 @@ function Get-DataDrive
     return $driveLetter
 }
 
-function Install-WindowsUpdate
+function Install-WindowsUpdateIfEnabled
 {
     if (Test-Path env:\BoxStarter:SkipWindowsUpdate)
     {
@@ -550,7 +550,7 @@ Set-RegionalSettings
 
 # SQL Server requires some KB patches before it will work, so windows update first
 Write-BoxstarterMessage "Windows update..."
-Install-WindowsUpdate
+Install-WindowsUpdateIfEnabled
 
 # disable chocolatey default confirmation behaviour (no need for --yes)
 choco feature enable --name=allowGlobalConfirmation
@@ -638,6 +638,6 @@ Install-PowerShellModules
 
 # rerun windows update after we have installed everything
 Write-BoxstarterMessage "Windows update..."
-Install-WindowsUpdate
+Install-WindowsUpdateIfEnabled
 
 Clear-Checkpoints
