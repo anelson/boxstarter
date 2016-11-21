@@ -166,8 +166,8 @@ function Install-CoreApps
     choco install dropbox               --limitoutput
     choco install 1password              --limitoutput
     choco install skype              --limitoutput
-    choco install 1password --limitoutput
-    choco install f.lux --limitoutput
+    choco install f.lux --limitoutputut
+    choco install evernote --limitoutput
 }
 
 function Install-HomeApps
@@ -211,6 +211,7 @@ function Install-CoreDevApps
 	choco install rdcman 				    --limitoutput
     choco install SublimeText3              --limitoutput
     choco install githubforwindows              --limitoutput
+    choco install intellijidea-ultimate              --limitoutput
 
 }
 
@@ -222,6 +223,7 @@ function Install-DevTools
 
     choco install dotnet3.5                      --limitoutput
 	choco install jdk8		        	    --limitoutput
+    choco install sbt --version 0.13.13.1                     --limitoutput
     choco install slack                     --limitoutput
     choco install fiddler4               	--limitoutput
 	choco install winscp              	    --limitoutput
