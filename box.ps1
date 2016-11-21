@@ -166,11 +166,12 @@ function Install-CoreApps
     choco install dropbox               --limitoutput
     choco install 1password              --limitoutput
     choco install skype              --limitoutput
+    choco install 1password --limitoutput
+    choco install f.lux --limitoutput
 }
 
 function Install-HomeApps
 {
-	choco install 1password	--limitoutput
 }
 
 function Install-SqlServer
@@ -226,7 +227,9 @@ function Install-DevTools
 	choco install nmap                	    --limitoutput
 	choco install nugetpackageexplorer	    --limitoutput
     choco install sysinternals              --limitoutput
-    choco install wihndirstat              --limitoutput
+    choco install windirstat              --limitoutput
+    choco install ruby              --limitoutput
+    choco install ruby2.devkit              --limitoutput
 
     #Install-WebPackage 'Docker Toolbox' 'exe' '/SILENT /COMPONENTS="Docker,DockerMachine,DockerCompose,VirtualBox,Kitematic" /TASKS="modifypath"' $DownloadFolder https://github.com/docker/toolbox/releases/download/v1.11.2/DockerToolbox-1.11.2.exe
 }
@@ -431,7 +434,16 @@ function Set-BaseSettings
     Set-CornerNavigationOptions -EnableUsePowerShellOnWinX
 
     # Disable hibernate
-	Start-Process 'powercfg.exe' -Verb runAs -ArgumentList '/h off'
+	#Start-Process 'powercfg.exe' -Verb runAs -ArgumentList '/h off'
+
+    # Change Power saving options (ac=plugged in dc=battery)
+    powercfg -change -monitor-timeout-ac 0
+    powercfg -change -monitor-timeout-dc 5
+    powercfg -change -standby-timeout-ac 0
+    powercfg -change -standby-timeout-dc 30
+    powercfg -change -disk-timeout-ac 0
+    powercfg -change -disk-timeout-dc 30
+    powercfg -change -hibernate-timeout-ac 0
 
     Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
 }
