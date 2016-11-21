@@ -637,6 +637,10 @@ if (Get-SystemDrive -ne $dataDriveLetter)
     Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
 }
 
+# Install the Carbon module first, it's a dependency of chocolatey and it includes a Get-FileShare
+# cmdlet which conflicts with an existing Get-FileShare cmdlet in Win10
+Install-Module Carbon -AllowClobber
+
 # install chocolatey as last choco package
 choco install chocolatey --limitoutput
 
