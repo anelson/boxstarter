@@ -161,17 +161,16 @@ function Install-WebPackage {
 function Install-CoreApps
 {
     choco install googlechrome              --limitoutput
-    choco install flashplayerplugin         --limitoutput
-    choco install notepadplusplus.install   --limitoutput
-    choco install paint.net                 --limitoutput
     choco install 7zip.install              --limitoutput
     choco install skype                     --limitoutput
-    choco install adobereader               --limitoutput
+    choco install dropbox               --limitoutput
+    choco install 1password              --limitoutput
+    choco install skype              --limitoutput
 }
 
 function Install-HomeApps
 {
-	choco install lastpass	--limitoutput
+	choco install 1password	--limitoutput
 }
 
 function Install-SqlServer
@@ -203,20 +202,15 @@ function Install-SqlServer
 
 function Install-CoreDevApps
 {
-    choco install git.install -params '"/GitAndUnixToolsOnPath"' --limitoutput
+    choco install git.install               --limitoutput
     choco install firefox                   --limitoutput
-    choco install poshgit                   --limitoutput
-    choco install resharper            	    --limitoutput
     choco install sourcetree 	            --limitoutput
-    choco install gitkraken 	            --limitoutput
-    choco install dotpeek             	    --limitoutput
-    choco install nodejs                    --limitoutput
-    choco install teamviewer                --limitoutput
-    choco install prefix               	    --limitoutput
     choco install commandwindowhere   	    --limitoutput
-    choco install virtualbox          	    --limitoutput
     choco install nuget.commandline		    --limitoutput
 	choco install rdcman 				    --limitoutput
+    choco install SublimeText3              --limitoutput
+    choco install githubforwindows              --limitoutput
+
 }
 
 function Install-DevTools
@@ -227,15 +221,10 @@ function Install-DevTools
 
 	choco install jdk8		        	    --limitoutput
     choco install slack                     --limitoutput
-    choco install redis-desktop-manager     --limitoutput
-    choco install packer               	    --limitoutput
-    choco install terraform           	    --limitoutput
-	choco install putty               	    --limitoutput
     choco install fiddler4               	--limitoutput
 	choco install winscp              	    --limitoutput
 	choco install nmap                	    --limitoutput
 	choco install nugetpackageexplorer	    --limitoutput
-	choco install diffmerge				    --limitoutput
 
     #Install-WebPackage 'Docker Toolbox' 'exe' '/SILENT /COMPONENTS="Docker,DockerMachine,DockerCompose,VirtualBox,Kitematic" /TASKS="modifypath"' $DownloadFolder https://github.com/docker/toolbox/releases/download/v1.11.2/DockerToolbox-1.11.2.exe
 }
@@ -409,7 +398,6 @@ function Set-ChocoCoreAppPins
     # pin apps that update themselves
     choco pin add -n=googlechrome
     choco pin add -n=Firefox
-    choco pin add -n='paint.net'
 }
 
 function Set-ChocoDevAppPins
@@ -418,7 +406,6 @@ function Set-ChocoDevAppPins
     choco pin add -n=visualstudiocode
     choco pin add -n=visualstudio2015community
     choco pin add -n=sourcetree
-    choco pin add -n=gitkraken
 }
 
 function Set-BaseSettings
@@ -455,8 +442,6 @@ function Set-BaseDesktopSettings
 function Set-DevDesktopSettings
 {
     Install-ChocolateyPinnedTaskBarItem "$($Boxstarter.programFiles86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe"
-
-    Install-ChocolateyFileAssociation ".dll" "$env:LOCALAPPDATA\JetBrains\Installations\dotPeek05\dotPeek64.exe"
 }
 
 function Move-WindowsLibrary {
@@ -482,13 +467,7 @@ function Set-RegionalSettings
     }
 
 	#http://stackoverflow.com/questions/4235243/how-to-set-timezone-using-powershell
-	&"$env:windir\system32\tzutil.exe" /s "AUS Eastern Standard Time"
-
-	Set-ItemProperty -Path "HKCU:\Control Panel\International" -Name sShortDate -Value 'dd MMM yy'
-	Set-ItemProperty -Path "HKCU:\Control Panel\International" -Name sCountry -Value Australia
-	Set-ItemProperty -Path "HKCU:\Control Panel\International" -Name sShortTime -Value 'hh:mm tt'
-	Set-ItemProperty -Path "HKCU:\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt'
-	Set-ItemProperty -Path "HKCU:\Control Panel\International" -Name sLanguage -Value ENA
+	&"$env:windir\system32\tzutil.exe" /s "Eastern Standard Time"
 
     Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
 }
@@ -574,12 +553,12 @@ if (Test-Path env:\BoxStarter:InstallDev)
 	Install-SqlServer -InstallDrive $dataDrive
    	Install-VisualStudio -DownloadFolder $tempInstallFolder
     Install-DevFeatures
-    Install-InternetInformationServices
+    # Install-InternetInformationServices
     Install-CoreDevApps
 	Install-DevTools  -DownloadFolder $tempInstallFolder
 
     # make folder for source code
-    New-SourceCodeFolder
+    # New-SourceCodeFolder
 
     # pin chocolatey app that self-update
     Set-ChocoDevAppPins
@@ -630,7 +609,7 @@ if (Test-PendingReboot) { Invoke-Reboot }
 # reload path environment variable
 Update-Path
 
-Install-NpmPackages
+# Install-NpmPackages
 
 Install-PowerShellModules
 
