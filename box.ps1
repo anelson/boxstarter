@@ -444,7 +444,7 @@ function Set-BaseSettings
 	#Start-Process 'powercfg.exe' -Verb runAs -ArgumentList '/h off'
 
     # Change Power saving options (ac=plugged in dc=battery)
-    powercfg -change -monitor-timeout-ac 0
+    powercfg -change -monitor-timeout-ac 15
     powercfg -change -monitor-timeout-dc 5
     powercfg -change -standby-timeout-ac 0
     powercfg -change -standby-timeout-dc 30
