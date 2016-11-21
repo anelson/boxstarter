@@ -161,6 +161,7 @@ function Install-WebPackage {
 function Install-CoreApps
 {
     choco install googlechrome              --limitoutput
+    choco install firefox              --limitoutput
     choco install 7zip.install              --limitoutput
     choco install skype                     --limitoutput
     choco install dropbox               --limitoutput
@@ -408,7 +409,7 @@ function Set-ChocoCoreAppPins
 {
     # pin apps that update themselves
     choco pin add -n=googlechrome
-    choco pin add -n=Firefox
+    choco pin add -n=firefox
 }
 
 function Set-ChocoDevAppPins
