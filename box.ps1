@@ -205,7 +205,6 @@ function Install-SqlServer
 function Install-CoreDevApps
 {
     choco install git.install               --limitoutput
-    choco install firefox                   --limitoutput
     choco install sourcetree 	            --limitoutput
     choco install commandwindowhere   	    --limitoutput
     choco install nuget.commandline		    --limitoutput
