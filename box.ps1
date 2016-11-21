@@ -231,6 +231,8 @@ function Install-DevTools
     choco install windirstat              --limitoutput
     choco install ruby              --limitoutput
     choco install ruby2.devkit              --limitoutput
+    choco install conemu              --limitoutput
+    choco install ethanbrown.conemuconfig              --limitoutput
 
     #Install-WebPackage 'Docker Toolbox' 'exe' '/SILENT /COMPONENTS="Docker,DockerMachine,DockerCompose,VirtualBox,Kitematic" /TASKS="modifypath"' $DownloadFolder https://github.com/docker/toolbox/releases/download/v1.11.2/DockerToolbox-1.11.2.exe
 }
