@@ -166,7 +166,7 @@ function Install-CoreApps
     choco install dropbox               --limitoutput
     choco install 1password              --limitoutput
     choco install skype              --limitoutput
-    choco install f.lux --limitoutputut
+    choco install f.lux --limitoutput
     choco install evernote --limitoutput
 }
 
