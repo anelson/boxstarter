@@ -84,7 +84,7 @@ if ($SqlServer2016IsoImage)
     }
 }
 
-$installScript = 'https://raw.githubusercontent.com/JonCubed/boxstarter/master/box.ps1'
+$installScript = 'https://raw.githubusercontent.com/anelson/boxstarter/master/box.ps1'
 $webLauncherUrl = "http://boxstarter.org/package/nr/url?$installScript"
 $edgeVersion = Get-AppxPackage -Name Microsoft.MicrosoftEdge
 
