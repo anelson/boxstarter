@@ -225,6 +225,8 @@ function Install-DevTools
 	choco install winscp              	    --limitoutput
 	choco install nmap                	    --limitoutput
 	choco install nugetpackageexplorer	    --limitoutput
+    choco install sysinternals              --limitoutput
+    choco install wihndirstat              --limitoutput
 
     #Install-WebPackage 'Docker Toolbox' 'exe' '/SILENT /COMPONENTS="Docker,DockerMachine,DockerCompose,VirtualBox,Kitematic" /TASKS="modifypath"' $DownloadFolder https://github.com/docker/toolbox/releases/download/v1.11.2/DockerToolbox-1.11.2.exe
 }
