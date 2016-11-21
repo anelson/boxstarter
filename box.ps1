@@ -451,6 +451,15 @@ function Set-BaseSettings
     powercfg -change -disk-timeout-dc 30
     powercfg -change -hibernate-timeout-ac 0
 
+    # Disable Windows Defender real-time scanning
+    Set-MpPreference -DisableRealtimeMonitoring $true
+
+    # Do not consent to Windows Defender sending your data to MSFT
+    Set-MpPreference -SubmitSamplesConsent 0
+
+    # Do not enable cloud protection
+    Set-MpPreference -MAPSReporting 0
+
     Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
 }
 
