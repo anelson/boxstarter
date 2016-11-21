@@ -164,7 +164,9 @@ function Install-CoreApps
     choco install firefox              --limitoutput
     choco install 7zip.install              --limitoutput
     choco install skype                     --limitoutput
-    choco install dropbox               --limitoutput
+
+    # As of 21 Nov 2016, the dropbox package is broken
+    # choco install dropbox               --limitoutput
     choco install 1password              --limitoutput
     choco install skype              --limitoutput
     choco install f.lux --limitoutput
