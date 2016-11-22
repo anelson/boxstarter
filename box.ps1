@@ -363,17 +363,8 @@ function Install-InternetInformationServices
 
 function Install-DevFeatures
 {
-    # Bash for windows
-    Write-BoxstarterMessage "Checking for Bash for Windows feature availability..."
-    $features = choco list --source windowsfeatures
-    if ($features | Where-Object {$_ -like "*Linux*"})
-    {
-        Write-BoxstarterMessage "Installing the Windows Subsystem for Linux feature..."
-        choco install Microsoft-Windows-Subsystem-Linux           --source windowsfeatures --limitoutput
-    } else {
-        $features | Format-List
-        Write-BoxstarterMessage "The Windows Subsystem for Linux feature is not available..."
-    }
+    # Windows Subsystem for Linux
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All
 
     # windows containers
     Enable-WindowsOptionalFeature -Online -FeatureName containers -All
