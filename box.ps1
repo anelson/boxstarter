@@ -364,10 +364,14 @@ function Install-InternetInformationServices
 function Install-DevFeatures
 {
     # Bash for windows
+    Write-BoxstarterMessage "Checking for Bash for Windows feature availability..."
     $features = choco list --source windowsfeatures
     if ($features | Where-Object {$_ -like "*Linux*"})
     {
+        Write-BoxstarterMessage "Installing the Windows Subsystem for Linux feature..."
         choco install Microsoft-Windows-Subsystem-Linux           --source windowsfeatures --limitoutput
+    } else {
+        Write-BoxstarterMessage "The Windows Subsystem for Linux feature is not available..."
     }
 
     # windows containers
@@ -407,7 +411,7 @@ function Install-PowerShellModules
 
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
     Set-PSRepository -Name 'PSGallery' -InstallationPolicy 'Trusted'
-    Install-Module -Name Carbon
+    Install-Module -Name Carbon -AllowClobber
     Install-Module -Name PowerShellHumanizer
     Set-PSRepository -Name 'PSGallery' -InstallationPolicy 'Untrusted'
 
@@ -637,9 +641,10 @@ if (Get-SystemDrive -ne $dataDriveLetter)
     Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
 }
 
-# Install the Carbon module first, it's a dependency of chocolatey and it includes a Get-FileShare
-# cmdlet which conflicts with an existing Get-FileShare cmdlet in Win10
-Install-Module Carbon -AllowClobber
+
+# Make sure the powershell modules from PSGallery are installed including Carbon which is a dependency
+# of chocolatey
+Install-PowerShellModules
 
 # install chocolatey as last choco package
 choco install chocolatey --limitoutput
