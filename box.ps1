@@ -371,7 +371,6 @@ function Install-DevFeatures
 
     # hyper-v (required for windows containers)
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
-
 }
 
 function Install-NpmPackages
@@ -650,8 +649,6 @@ if (Test-PendingReboot) { Invoke-Reboot }
 Update-Path
 
 # Install-NpmPackages
-
-Install-PowerShellModules
 
 # set HOME to user profile for git
 [Environment]::SetEnvironmentVariable("HOME", $env:UserProfile, "User")
