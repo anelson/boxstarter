@@ -361,8 +361,36 @@ function Install-InternetInformationServices
     Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
 }
 
+function Enable-DeveloperMode {
+    # This is much harder than it should be.  First we need to install the Remote Server Admin Tools (RSAT)
+    # and then we need to enable group policy management, this will make a GroupPolicy PS module available
+    # Then using that PS module we need to enable developer mode.
+    #choco install rsat --limitoutput
+
+    # Import the RSAT Servermanager module to use to interact with its features
+    #Import-Module Servermanager
+
+    # Set-GPRegistryValue -Name "EnableDevModeGPO" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Value "AllowAllTrustedApps" -Type "DWORD" -Value 1
+    # Set-GPRegistryValue -Name "EnableDevModeGPO" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Value "AllowDevelopmentWithoutDevLicense" -Type "DWORD" -Value 1
+
+    # Hand-jam registry values that enable developer mode.  These are AFAIK undocumented
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowAllTrustedApps" -Value 1 -PropertyType DWORD -Force
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense" -Value 1 -PropertyType DWORD -Force
+}
+
 function Install-DevFeatures
 {
+    $checkpoint = 'DevFeatures'
+    $done = Get-Checkpoint -CheckpointName $checkpoint
+
+    if ($done) {
+        Write-BoxstarterMessage "Dev features already enabled"
+        return
+    }
+
+    # Must enable developer mode in order to use WSL
+    Enable-DeveloperMode
+
     # Windows Subsystem for Linux
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All
 
@@ -371,6 +399,10 @@ function Install-DevFeatures
 
     # hyper-v (required for windows containers)
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+    Set-Checkpoint -CheckpointName $checkpoint -CheckpointValue 1
+
+    if (Test-PendingReboot) { Invoke-Reboot }
 }
 
 function Install-NpmPackages
