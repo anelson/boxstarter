@@ -371,6 +371,7 @@ function Install-DevFeatures
         Write-BoxstarterMessage "Installing the Windows Subsystem for Linux feature..."
         choco install Microsoft-Windows-Subsystem-Linux           --source windowsfeatures --limitoutput
     } else {
+        $features | Format-List
         Write-BoxstarterMessage "The Windows Subsystem for Linux feature is not available..."
     }
 
