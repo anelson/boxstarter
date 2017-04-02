@@ -31,4 +31,11 @@ Set-MpPreference -MAPSReporting 0
 #http://stackoverflow.com/questions/4235243/how-to-set-timezone-using-powershell
 &"$env:windir\system32\tzutil.exe" /s "Eastern Standard Time"
 
+# Enable the Blank screensaver, require password
+$regkeypath = "HKCU:\Control Panel\Desktop"
+Set-ItemProperty -Path $regkeypath -Name "ScreenSaveActive"  -Value 1
+Set-ItemProperty -Path $regkeypath -Name "ScreenSaverIsSecure" -Value 1
+Set-ItemProperty -Path $regkeypath -Name "ScreenSaveTimeOut"  -Value 600 # 10 minutes
+Set-ItemProperty -Path $regkeypath -Name "SCRNSAVE.EXE" -Value "$($env:SystemRoot)\system32\scrnsave.scr" # blank
+
 Write-BoxstarterMessage "Configured"
