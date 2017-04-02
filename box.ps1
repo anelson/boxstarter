@@ -1,50 +1,8 @@
+. (Join-Path -Path $PSScriptRoot -ChildPath 'functions.ps1')
+
 $Boxstarter.RebootOk=$true
 $Boxstarter.NoPassword=$false
 $Boxstarter.AutoLogin=$true
-
-function Install-WindowsUpdateIfEnabled
-{
-    if (Test-Path env:\BoxStarter:SkipWindowsUpdate)
-    {
-        return
-    }
-
-	Enable-MicrosoftUpdate
-	Install-WindowsUpdate -AcceptEula
-	if (Test-PendingReboot) { Invoke-Reboot }
-}
-
-function Create-PackageFromScript([string]$path)
-{
-    $hash = (get-filehash $path).Hash
-    $packageName = "boxstarter.temp." + (get-item $path).BaseName + "." + $hash.Substring(0, 10)
-
-    New-PackageFromScript $path $packageName
-
-    return $packageName
-}
-
-function Get-PackageScripts 
-{
-    Get-ChildItem (Join-Path -Path $PSScriptRoot -ChildPath "packages\*.*") -include "*.ps1"
-}
-
-function Get-Packages
-{
-    $packages = @()
-    foreach ($script in Get-PackageScripts) {
-        $packages += Create-PackageFromScript $script
-    }
-
-    return $packages
-}
-
-function Install-Package([string]$packageName)
-{
-    Write-BoxstarterMessage "Installing $packageName"
-    Install-BoxstarterPackage $packageName
-    if (Test-PendingReboot) { Invoke-Reboot }
-}
 
 Write-BoxstarterMessage "Updating Windows prior to installing packages..."
 Install-WindowsUpdateIfEnabled
@@ -54,9 +12,9 @@ choco feature enable --name=allowGlobalConfirmation
 
 Write-BoxstarterMessage "Installing packages..."
 
-$packages = Get-Packages
-foreach ($package in $packages) {
-    Install-Package $package
+$scripts = Get-Scripts
+foreach ($script in $scripts) {
+    Install-Script $script
 }
 
 # install chocolatey as last choco package
