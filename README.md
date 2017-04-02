@@ -1,92 +1,18 @@
-# Automated Windows PC Setup
+# Automated Windows system setup
 
-A script for setting up a Windows PC using BoxStarter and Chocolatey.
+These are my scripts to configure a Windows development workstation using Boxstarter.
 
-This script is based on my original [gist](https://gist.github.com/JonCubed/e5f6c273b6e836a8cfba0a92fe2f4f1a)
-and [neutmute script's](https://github.com/neutmute/nm-boxstarter)
+# Install on a new system
 
-## How To Use
+From a new system, you have to install Chocolatey first.  Then, in a PowerShell admin prompt, run:
 
-There are a few options for launching a BoxStarter script check out the [offical documentation](http://boxstarter.org/InstallingPackages) for
-all the various methods. We'll focus on two methods - manual and bootstrapper.
+`./bootstrap.ps1`
 
-### Bootstrapper
+That will open a new Edge browser and launch the installation process.  Note it's important to do it that way because Boxstarter is more than just some scripts, it will have to reboot the system multiple times, and as long as you don't get in the way, it will log back in after each reboot and pick up where it left off.
 
-The Bootstrapper method is the recommended way to run this script. Simply open a evelated powershell
-console and run the following command
+# Add/modify the scripts
 
-```powershell
-> wget -Uri 'https://raw.githubusercontent.com/JonCubed/boxstarter/master/bootstrap.ps1' -OutFile "$($env:temp)\bootstrap.ps1";&Invoke-Command -ScriptBlock { &"$($env:temp)\bootstrap.ps1" <arguments> }
-```
+The scripts under `packages/` are regular PowerShell scripts that are packaged into Boxstarter packages as part of the scripting logic in `box.ps1`.  The scripts are named according to themes, like `standard_apps.ps1` installs things like Office, `windows_dev_tools.ps1` is Visual Studio, etc.  Add install commands to whichever script best fits the package you're adding, and re-run the installation process.  Alternatively, you can manually run the particular package script you've changed, from within the Boxstarter shell (a shortcut should be on your desktop once Boxstarter is installled).
 
-You can remove *&lt;arguments&gt;* or replace it with one or more argument lists below
+It's worthwhile to adopt the discipline that when you want a software package installed, you update these scripts and install it that way.  It's a hassle, but if you keep that discipline then your mental resistance to repaving or moving to different systems will be much lower, since you know you can get your system back the way you want it easily.
 
-|Argument|Type|Requires|Value Description|
-|--------|----|--------|-----------------|
-|InstallDev|Switch||Configures machine for development and install development apps|
-|InstallHome|Switch||Configures machine for home and install home apps|
-|SkipWindowsUpdate|Switch||Skips running windows update|
-|DataDrive|Char||Drive letter to move data too. Defaults to System Drive|
-|SourceCodeFolder|String|InstallDev|Relative or Absolute path to source code folder. If relative will use Data Drive value|
-|EnableWindowsAuthFeature|Switch|InstallDev|Enable Windows Authentication in IIS|
-|SqlServer2016IsoImage|String|InstallDev|Absolute path to Sq Server 2016 ISO|
-
-#### Examples
-
-1. Setup a development box without windows update
-
-```powershell
-> wget -Uri 'https://raw.githubusercontent.com/JonCubed/boxstarter/master/bootstrap.ps1' -OutFile "$($env:temp)\bootstrap.ps1";&Invoke-Command -ScriptBlock { &"$($env:temp)\bootstrap.ps1" -InstallDev -SkipWindowsUpdate }
-```
-
-1. Setup a development box, move windows libraries and source code folder to another drive
-
-```powershell
-> wget -Uri 'https://raw.githubusercontent.com/JonCubed/boxstarter/master/bootstrap.ps1' -OutFile "$($env:temp)\bootstrap.ps1";&Invoke-Command -ScriptBlock { &"$($env:temp)\bootstrap.ps1" -InstallDev -DataDrive 'D' -SourceCodeFolder '/source' }
-```
-
-1. Setup a development box with sql server
-
-```powershell
-> wget -Uri 'https://raw.githubusercontent.com/JonCubed/boxstarter/master/bootstrap.ps1' -OutFile "$($env:temp)\bootstrap.ps1";&Invoke-Command -ScriptBlock { &"$($env:temp)\bootstrap.ps1" -InstallDev -SqlServer2016IsoImage 'D:/temp/en_sql_server_2016_developer_x64_dvd_8777069.iso' }
-```
-
-
-1. Setup a home box
-
-```powershell
-> wget -Uri 'https://raw.githubusercontent.com/JonCubed/boxstarter/master/bootstrap.ps1' -OutFile "$($env:temp)\bootstrap.ps1";&Invoke-Command -ScriptBlock { &"$($env:temp)\bootstrap.ps1" -InstallHome }
-```
-
-
-### Manual
-
-If you want more control over what is happening you can manually run the script.
-
-1. You must first setup environment keys for the features you would like to install.
-
-    |Key|Value|Requires|Value Description|
-    |--------|----|--------|-----------------|
-    |BoxStarter:InstallDev|1||Configures machine for development and install development apps|
-    |BoxStarter:InstallHome|1||Configures machine for home and install home apps|
-    |BoxStarter:SkipWindowsUpdate|1||Skips running windows update|
-    |BoxStarter:DataDrive|Char||Drive letter to move data too. Defaults to System Drive|
-    |BoxStarter:SourceCodeFolder|String|BoxStarter:InstallDev|Relative or Absolute path to source code folder. If relative will use Data Drive value|
-    |BoxStarter:EnableWindowsAuthFeature|1|BoxStarter:InstallDev|Enable Windows Authentication in IIS|
-    |choco:sqlserver2016:isoImage|String|BoxStarter:InstallDev|Absolute path to Sq Server 2016 ISO|
-
-    > Environment variables must be added to *Machine* and *Process* scopes
-
-1. Run the following command
-
-    * In Command prompt or Powershell
-
-    ```powershell
-    > START http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/JonCubed/boxstarter/master/box.ps1
-    ```
-
-  * In Edge Or Internet Explorer, go to
-
-    ```http
-    http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/JonCubed/boxstarter/master/box.ps1
-    ```
