@@ -28,6 +28,8 @@ if (Test-PendingReboot) { Invoke-Reboot }
 # set HOME to user profile for git
 [Environment]::SetEnvironmentVariable("HOME", $env:UserProfile, "User")
 
+Clear-Checkpoints
+
 # rerun windows update after we have installed everything
 Write-BoxstarterMessage "Updating Windows again after installing packages..."
 
