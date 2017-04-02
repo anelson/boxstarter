@@ -36,7 +36,8 @@ choco install windirstat              --limitoutput
 choco install commandwindowhere         --limitoutput
 
 # Apps
-choco install office365proplus              --limitoutput
+# This package is Office 2013; our license is for Office 2016, so must use the installer in the Dropbox folder 'Software'
+# choco install office365proplus              --limitoutput 
 choco install evernote --limitoutput
 choco pin add -n=evernote  #auto-updates take priority over chocolatey published package updates
 
