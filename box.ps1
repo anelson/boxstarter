@@ -26,7 +26,7 @@ function Create-PackageFromScript([string]$path)
 
 function Get-PackageScripts 
 {
-    Get-ChildItem (Join-Path -Path $PSScriptRoot -ChildPath "packages\*.*") -include "add_languages.ps1"
+    Get-ChildItem (Join-Path -Path $PSScriptRoot -ChildPath "packages\*.*") -include "*.ps1"
 }
 
 function Get-Packages
